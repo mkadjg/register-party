@@ -1,0 +1,10 @@
+.navbar {
+    margin-bottom: 20px;
+}
+
+.banner {
+    background-image: url('https://berkarya.or.id//assets/images/benner1.jpg');
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-position:center;
+}

@@ -1,0 +1,11 @@
+.offtop {
+    padding: 25px;
+}
+
+.list {
+    padding-left: 18px;
+}
+
+.select, .select select{
+    width: 100%;
+}
