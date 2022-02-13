@@ -19,4 +19,9 @@ public class LoginController {
         return loginService.login(payload);
     }
 
+    @RequestMapping("/admin")
+    public Object loginAdmin(@RequestBody LoginPayload payload) {
+        return loginService.loginAdmin(payload);
+    }
+
 }

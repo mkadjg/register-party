@@ -81,7 +81,7 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a href="/login/" class="button is-light">
+                            <a href="/login" class="button is-light">
                                 Logout
                             </a>
                         </div>
@@ -106,10 +106,10 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <img style="height: 160px; width: 135px; border-radius: 5px" src="https://bulma.io/images/placeholders/128x128.png" alt="Foto Closeup">
+                                                    <img style="height: 160px; width: 135px; border-radius: 5px" id="foto_closeup" alt="Foto Closeup">
                                                 </td>
                                                 <td>
-                                                    <img style="height: 160px; width: 280px; border-radius: 5px" src="https://bulma.io/images/placeholders/128x128.png" alt="KTP">
+                                                    <img style="height: 160px; width: 280px; border-radius: 5px" id="foto_ktp" alt="KTP">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -119,6 +119,14 @@
                                             <tr>
                                                 <td><strong>NIK / KTP</strong></td>
                                                  <td id="nik"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Nomor Induk Anggota</strong></td>
+                                                <td id="nomor_induk_anggota"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Tanggal Daftar</strong></td>
+                                                 <td id="tanggal_daftar"></td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Email</strong></td>
@@ -171,7 +179,7 @@
                         </article>
                     </div>
                     <footer class="card-footer">
-                        <a href="#" class="card-footer-item">Edit</a>
+                        <a href="/update-profile-anggota" class="card-footer-item">Edit</a>
                     </footer>
                 </div>
             </div>

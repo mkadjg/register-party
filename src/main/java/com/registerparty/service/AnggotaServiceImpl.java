@@ -3,7 +3,7 @@ package com.registerparty.service;
 import com.registerparty.model.*;
 import com.registerparty.payload.AnggotaPayload;
 import com.registerparty.payload.Response;
-import com.registerparty.repository.AnggotaRepository;
+import com.registerparty.repository.*;
 import com.registerparty.utility.HashUtil;
 import com.registerparty.utility.IdAnggotaGenerator;
 import com.registerparty.utility.NomorIndukAnggotaGenerator;
@@ -11,8 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -23,12 +30,33 @@ public class AnggotaServiceImpl implements AnggotaService {
     @Autowired
     AnggotaRepository anggotaRepository;
 
+    @Autowired
+    EntityManager entityManager;
+
+    @Autowired
+    PekerjaanRepository pekerjaanRepository;
+
+    @Autowired
+    PendidikanRepository pendidikanRepository;
+
+    @Autowired
+    KecamatanRepository kecamatanRepository;
+
+    @Autowired
+    KelurahanRepository kelurahanRepository;
+
+
     @Override
     public Response<Object> save(AnggotaPayload payload) {
         Response<Object> response = new Response<>();
         try {
             Anggota anggota = new Anggota();
-            anggota.setIdAnggota(IdAnggotaGenerator.generate());
+            if (payload.getIdAnggota() != null && payload.getIdAnggota() != null) {
+                anggota = anggotaRepository.findById(payload.getIdAnggota()).orElse(null);
+            } else {
+                anggota.setIdAnggota(IdAnggotaGenerator.generate());
+            }
+            assert anggota != null;
             anggota.setNamaAnggota(payload.getNamaAnggota());
             anggota.setAlamat(payload.getAlamat());
             anggota.setEmail(payload.getEmail());
@@ -81,6 +109,47 @@ public class AnggotaServiceImpl implements AnggotaService {
             response.setError("Internal Service Error!");
         }
         return response;
+    }
+
+    @Override
+    public Response<Object> findAllDatatable(String namaLengkap, String nik, String nomorIndukAnggota, String email, int idKecamatan, int idKelurahan) {
+        Response<Object> response = new Response<>();
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Anggota> query = builder.createQuery(Anggota.class);
+            Root<Anggota> root = query.from(Anggota.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+            if (namaLengkap != null && !namaLengkap.equals("")) {
+                predicates.add(builder.equal(root.get("namaAnggota"), namaLengkap));
+            }
+
+            if (nik != null && !nik.equals("")) {
+                predicates.add(builder.equal(root.get("nik"), nik));
+            }
+
+            if (nomorIndukAnggota != null && !nomorIndukAnggota.equals("")) {
+                predicates.add(builder.equal(root.get("nomorIndukAnggota"), nomorIndukAnggota));
+            }
+
+            if (email != null && !email.equals("")) {
+                predicates.add(builder.equal(root.get("email"), email));
+            }
+
+            Kecamatan kecamatan = kecamatanRepository.findById(idKecamatan).orElse(null);
+            if (kecamatan != null) {
+                predicates.add(builder.equal(root.get("kecamatan"), kecamatan));
+                kelurahanRepository.findById(idKelurahan).ifPresent(kelurahan -> predicates.add(builder.equal(root.get("kelurahan"), kelurahan)));
+            }
+
+            query.where(predicates.toArray(new Predicate[0]));
+            response.setSuccess(entityManager.createQuery(query.select(root)).getResultList());
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setError("Internal Service Error!");
+        }
+        return null;
     }
 
 }

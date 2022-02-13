@@ -1,17 +1,20 @@
 package com.registerparty.controller.rest;
 
+import com.registerparty.dto.AnggotaDto;
 import com.registerparty.model.Anggota;
 import com.registerparty.payload.AnggotaPayload;
 import com.registerparty.payload.Response;
 import com.registerparty.repository.AnggotaRepository;
 import com.registerparty.service.AnggotaService;
-import org.graalvm.compiler.nodes.calc.ObjectEqualsNode;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -23,25 +26,36 @@ public class AnggotaController {
 
     @Autowired
     AnggotaRepository anggotaRepository;
+    
+    @Autowired
+    ModelMapper modelMapper;
 
     @GetMapping("/find-all")
     public Object findAll(@RequestParam("nama") String nama,
-                                    @RequestParam("nik") String nik,
-                                    @RequestParam("nomorIndukAnggota") String nomorIndukAnggota,
-                                    @RequestParam("email") String email,
-                                    @RequestParam("kecamatan") String kecamatan,
-                                    @RequestParam("kelurahan") String kelurahan,
-                                    @RequestParam("tanggalDaftar") String tanggalDaftar) {
-
-        return null;
+                          @RequestParam("nik") String nik,
+                          @RequestParam("nomorIndukAnggota") String nomorIndukAnggota,
+                          @RequestParam("email") String email,
+                          @RequestParam("idKecamatan") int idKecamatan,
+                          @RequestParam("idKelurahan") int idKelurahan
+                          ) {
+        Response<Object> response;
+        response = anggotaService.findAllDatatable(nama, nik, nomorIndukAnggota, email, idKecamatan, idKelurahan);
+        if (response.getRc().equals("00")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @GetMapping("/detail")
-    public Object detail(@RequestParam("nik") String nik) {
+    public Object detail(@RequestParam("nik") String nik) throws SQLException {
         Response<Object> response = new Response<>();
         Optional<Anggota> anggota = anggotaRepository.findByNik(nik);
         if (anggota.isPresent()) {
-            response.setSuccess("Berhasil", anggota.get());
+            AnggotaDto anggotaDto = modelMapper.map(anggota.get(), AnggotaDto.class);
+            anggotaDto.setFotoCloseup(anggota.get().getFotoCloseup().getBytes(1l, (int)anggota.get().getFotoCloseup().length()));
+            anggotaDto.setFotoKtp(anggota.get().getFotoKtp().getBytes(1l, (int)anggota.get().getFotoKtp().length()));
+            response.setSuccess("Berhasil", anggotaDto);
         } else {
             response.setError("99", "NIK belum terdaftar sebagai anggota");
         }

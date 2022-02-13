@@ -11,7 +11,9 @@
         <link rel="shortcut icon" href="${contextPath}/assets/logo-berkarya-full.jpg" type="image/x-icon">
         <link href="${contextPath}/webjars/toastr/2.1.2/build/toastr.min.css" rel="stylesheet">
         <link href="${contextPath}/webjars/bulma/0.9.1/css/bulma.min.css" rel="stylesheet">
-        <link href="${contextPath}/css/login.css" rel="stylesheet">
+        <link href="${contextPath}/webjars/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link href="${contextPath}/css/admin.css" rel="stylesheet">
+        <link href="${contextPath}/css/jquery_datatable.css" rel="stylesheet">
     </head>
 
     <body>
@@ -81,8 +83,8 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a href="/daftar-anggota" class="button is-warning">
-                                <strong>Daftar Anggota</strong>
+                            <a href="/login-admin" class="button is-light">
+                                Logout
                             </a>
                         </div>
                     </div>
@@ -90,29 +92,109 @@
             </div>
         </nav>
 
-        <div class="column is-4 is-offset-4">
+        <div class="columns offtop" style="margin: 10px">
+            <div class="column is-10">
+                <h4 class="subtitle is-4">Rekap Data Anggota</h4>
+            </div>
+        </div>
 
-            <form class="box">
-                <div class="field">
-                    <img src="${contextPath}/assets/logo-berkarya.png">
-                </div>
+        <div class="columns offtop" style="margin: 10px">
+            <div class="column is-12">
+                <form class="box">
+                    <h4 class="subtitle is-4">Filter</h4>
+                    <div class="columns">
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Nama Lengkap</label>
+                                <div class="control">
+                                    <input class="input" name="nama" type="text" placeholder="Nama Lengkap">
+                                </div>
+                            </div>
 
-                <div class="field">
-                    <label class="label">NIK</label>
-                    <div class="control">
-                        <input class="input" name="nik" type="text" placeholder="NIK">
+                            <div class="field">
+                                <label class="label">NIK / KTP</label>
+                                <div class="control">
+                                    <input class="input" name="nik" type="text" placeholder="NIK / KTP">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Nomor Induk Anggota</label>
+                                <div class="control">
+                                    <input class="input" name="nomorIndukAnggota" type="text" placeholder="Nomor Induk Anggota">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input class="input" name="email" type="text" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Kecamatan</label>
+                                <div class="select is-info">
+                                    <div class="control">
+                                        <select name="kecamatan" id="kecamatan">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Kelurahan</label>
+                                <div class="select is-info">
+                                    <div class="control">
+                                        <select name="kelurahan" id="kelurahan">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                    <button id="refresh" class="button is-success">
+                        <span class="icon is-small">
+                          <i class="fas fa-refresh"></i>
+                        </span>
+                        <span>Refresh</span>
+                    </button>
+                    <button id="generate" class="button is-success">
+                        <span class="icon is-small">
+                          <i class="fas fa-file-excel"></i>
+                        </span>
+                        <span>Generate Excel</span>
+                    </button>
+                </form>
+            </div>
+        </div>
 
-                <div class="field">
-                    <label class="label">Password</label>
-                    <div class="control">
-                        <input class="input" name="password" type="password" placeholder="Password">
-                    </div>
-                </div>
-
-                <button type="submit" class="button is-warning">Login</button>
-            </form>
+        <div class="columns offtop" style="margin: 20px">
+            <div class="column is-12 box">
+                <table id="tableAnggota" class="table display nowrap " style="width: 100%;">
+                    <thead class="table-container">
+                        <tr>
+                            <th>Nomor Urut</th>
+                            <th>Nama Anggota</th>
+                            <th>NIK / KTP</th>
+                            <th>Nomor Induk Anggota</th>
+                            <th>Tanggal Daftar</th>
+                            <th>Email</th>
+                            <th>Tempat Lahir</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Pendidikan</th>
+                            <th>Pekerjaan</th>
+                            <th>Status Perkawinan</th>
+                            <th>Kecamatan</th>
+                            <th>Kelurahan</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
 
         <footer class="footer">
@@ -149,11 +231,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
 
-        <script src="${contextPath}/webjars/jquery/3.5.1/jquery.min.js"></script>
-        <script src="${contextPath}/webjars/toastr/2.1.2/build/toastr.min.js"></script>
-        <script src="${contextPath}/js/login.js"></script>
+    <script src="${contextPath}/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="${contextPath}/webjars/toastr/2.1.2/build/toastr.min.js"></script>
+    <script src="${contextPath}/js/admin.js"></script>
+    <script src="${contextPath}/js/jquery_datatable.js"></script>
+    <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
     </body>
 </html>

@@ -5,4 +5,5 @@ import com.registerparty.payload.Response;
 
 public interface LoginService {
     Response<Object> login(LoginPayload payload);
+    Response<Object> loginAdmin(LoginPayload payload);
 }

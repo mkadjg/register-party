@@ -11,7 +11,7 @@
         <link rel="shortcut icon" href="${contextPath}/assets/logo-berkarya-full.jpg" type="image/x-icon">
         <link href="${contextPath}/webjars/toastr/2.1.2/build/toastr.min.css" rel="stylesheet">
         <link href="${contextPath}/webjars/bulma/0.9.1/css/bulma.min.css" rel="stylesheet">
-        <link href="${contextPath}/css/login.css" rel="stylesheet">
+        <link href="${contextPath}/css/login-admin.css" rel="stylesheet">
     </head>
 
     <body>
@@ -81,9 +81,6 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a href="/daftar-anggota" class="button is-warning">
-                                <strong>Daftar Anggota</strong>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -98,9 +95,9 @@
                 </div>
 
                 <div class="field">
-                    <label class="label">NIK</label>
+                    <label class="label">Username</label>
                     <div class="control">
-                        <input class="input" name="nik" type="text" placeholder="NIK">
+                        <input class="input" name="username" type="text" placeholder="Username">
                     </div>
                 </div>
 
@@ -154,6 +151,6 @@
 
         <script src="${contextPath}/webjars/jquery/3.5.1/jquery.min.js"></script>
         <script src="${contextPath}/webjars/toastr/2.1.2/build/toastr.min.js"></script>
-        <script src="${contextPath}/js/login.js"></script>
+        <script src="${contextPath}/js/login-admin.js"></script>
     </body>
 </html>

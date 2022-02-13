@@ -22,9 +22,24 @@ public class RouteController {
         return "login";
     }
 
+    @RequestMapping(value = "/login-admin", method = RequestMethod.GET)
+    public String loginAdmin() {
+        return "login-admin";
+    }
+
     @RequestMapping(value = "/profile-anggota", method = RequestMethod.GET)
     public String profile() {
         return "profile-anggota";
+    }
+
+    @RequestMapping(value = "/update-profile-anggota", method = RequestMethod.GET)
+    public String updateProfile() {
+        return "update-profile-anggota";
+    }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String admin() {
+        return "admin";
     }
 
 }
