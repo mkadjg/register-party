@@ -181,56 +181,46 @@ $(document).ready(function(){
 
         console.log(body);
 
-//        $.post({
-//            url: "/api/anggota/save",
-//            contentType: "application/json",
-//            dataType: "json",
-//            data: JSON.stringify(body),
-//            success: function(e){
-//                if (e.rc == "00") {
-//                    var data = e.data;
-//                    var idAnggota = data.idAnggota;
-//
-//                    var formDataKtp = new FormData();
-//                    formDataKtp.append('foto', $("#upload-ktp").get(0).files[0]);
-//                    $.ajax({
-//                        url: "/api/anggota/upload-ktp/" + idAnggota,
-//                        data: formDataKtp,
-//                        type: 'POST',
-//                        contentType: false,
-//                        processData: false,
-//                        success: function(response){
-//                            console.log(response);
-//                        }
-//                    });
-//
-//                    var formDataCloseup = new FormData();
-//                    formDataCloseup.append('foto', $("#upload-closeup").get(0).files[0]);
-//                    $.ajax({
-//                        url: "/api/anggota/upload-closeup/" + idAnggota,
-//                        data: formDataCloseup,
-//                        type: 'POST',
-//                        contentType: false,
-//                        processData: false,
-//                        success: function(response){
-//                            console.log(response);
-//                        }
-//                    });
-//                }
-//                $('.input').val("");
-//                $('.select').val("");
-//                $('.textarea').val("");
-//               $('input:checkbox').removeAttr('checked');
-//                $('#upload-ktp').val('');
-//                $('#upload-closeup').val('');
-//                $("#filename-ktp").html("...");
-//                $("#filename-closeup").html("...");
-//                $("#ktp").attr('src', "#");
-//                $("#closeup").attr('src', "#");
-//                $('#submit').last().removeClass("is-loading");
-//                toastr.success("Pendaftaran Berhasil", "Sukses");
-//            }
-//        });
+        $.post({
+            url: "/api/anggota/save",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(body),
+            success: function(e){
+                if (e.rc == "00") {
+                    var data = e.data;
+                    var idAnggota = data.idAnggota;
+
+                    var formDataKtp = new FormData();
+                    formDataKtp.append('foto', $("#upload-ktp").get(0).files[0]);
+                    $.ajax({
+                        url: "/api/anggota/upload-ktp/" + idAnggota,
+                        data: formDataKtp,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
+
+                    var formDataCloseup = new FormData();
+                    formDataCloseup.append('foto', $("#upload-closeup").get(0).files[0]);
+                    $.ajax({
+                        url: "/api/anggota/upload-closeup/" + idAnggota,
+                        data: formDataCloseup,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
+                }
+                window.location.replace("/profile-anggota");
+                toastr.success("Pendaftaran Berhasil", "Sukses");
+            }
+        });
 
     });
 });
