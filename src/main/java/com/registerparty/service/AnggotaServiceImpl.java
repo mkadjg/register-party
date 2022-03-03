@@ -55,6 +55,7 @@ public class AnggotaServiceImpl implements AnggotaService {
                 anggota = anggotaRepository.findById(payload.getIdAnggota()).orElse(null);
             } else {
                 anggota.setIdAnggota(IdAnggotaGenerator.generate());
+                anggota.setPassword(HashUtil.SHA_256.digestAsHex(payload.getPassword()));
             }
             assert anggota != null;
             anggota.setNamaAnggota(payload.getNamaAnggota());
@@ -67,7 +68,6 @@ public class AnggotaServiceImpl implements AnggotaService {
             anggota.setNomorUrutAnggota(noUrut == null ? 1 : noUrut + 1);
             anggota.setTanggalLahir(payload.getTanggalLahir());
             anggota.setTanggalDaftar(payload.getTanggalDaftar());
-            anggota.setPassword(HashUtil.SHA_256.digestAsHex(payload.getPassword()));
             anggota.setTanggalDaftar(new Date());
             anggota.setNomorIndukAnggota(NomorIndukAnggotaGenerator.generate(noUrut == null ? 1 : noUrut + 1, payload.getTanggalLahir()));
 

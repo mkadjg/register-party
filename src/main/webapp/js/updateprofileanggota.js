@@ -95,17 +95,30 @@ $(document).ready(function(){
             if (response.rc == "00") {
                 $("input[name=idAnggota]").val(response.data.idAnggota)
                 $("input[name=nama]").val(response.data.namaAnggota)
-                $("input[name=nik").val(response.data.nik)
-                $("input[name=email").val(response.data.email)
-                $("input[name=nomorHandphone").val(response.data.noHandphone)
-                $("input[name=tempatLahir").val(response.data.tempatLahir)
-                $("input[name=tanggalLahir").val(new Date(response.data.tanggalLahir).toDateString())
-                $("select[name=jenisKelamin").val(response.data.jenisKelamin.idJenisKelamin)
-                $("select[name=pendidikan").val(response.data.pendidikan.idPendidikan)
-                $("select[name=pekerjaan").val(response.data.pekerjaan.idPekerjaan)
-                $("select[name=statusPerkawinan").val(response.data.statusPerkawinan.idStatusPerkawinan)
-                $("textarea[name=alamat").val(response.data.alamat)
-                $("select[name=kecamatan").val(response.data.kecamatan.idKecamatan)
+                $("input[name=nik]").val(response.data.nik)
+                $("input[name=email]").val(response.data.email)
+                $("input[name=nomorHandphone]").val(response.data.noHandphone)
+                $("input[name=tempatLahir]").val(response.data.tempatLahir)
+
+                var formattedDate = new Date(response.data.tanggalLahir)
+                var d = formattedDate.getDate();
+                var m =  formattedDate.getMonth();
+                m += 1;  // JavaScript months are 0-11
+                if (d < 10) {
+                        d = "0" + d;
+                }
+                if (m < 10) {
+                    m = "0" + m;
+                }
+                var y = formattedDate.getFullYear();
+                $("input[name=tanggalLahir]").val(y + "-" + m + "-" + d);
+
+                $("select[name=jenisKelamin]").val(response.data.jenisKelamin.idJenisKelamin)
+                $("select[name=pendidikan]").val(response.data.pendidikan.idPendidikan)
+                $("select[name=pekerjaan]").val(response.data.pekerjaan.idPekerjaan)
+                $("select[name=statusPerkawinan]").val(response.data.statusPerkawinan.idStatusPerkawinan)
+                $("textarea[name=alamat]").val(response.data.alamat)
+                $("select[name=kecamatan]").val(response.data.kecamatan.idKecamatan)
                 $.ajax({
                     url : 'kelurahan/find-all/' + response.data.kecamatan.idKecamatan,
                     type: 'GET',
@@ -217,6 +230,7 @@ $(document).ready(function(){
                         }
                     });
                 }
+                $('#submit').last().removeClass("is-loading");
                 window.location.replace("/profile-anggota");
                 toastr.success("Pendaftaran Berhasil", "Sukses");
             }

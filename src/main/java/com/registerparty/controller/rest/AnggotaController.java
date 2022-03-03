@@ -53,8 +53,12 @@ public class AnggotaController {
         Optional<Anggota> anggota = anggotaRepository.findByNik(nik);
         if (anggota.isPresent()) {
             AnggotaDto anggotaDto = modelMapper.map(anggota.get(), AnggotaDto.class);
-            anggotaDto.setFotoCloseup(anggota.get().getFotoCloseup().getBytes(1l, (int)anggota.get().getFotoCloseup().length()));
-            anggotaDto.setFotoKtp(anggota.get().getFotoKtp().getBytes(1l, (int)anggota.get().getFotoKtp().length()));
+            if (anggota.get().getFotoCloseup() != null) {
+                anggotaDto.setFotoCloseup(anggota.get().getFotoCloseup().getBytes(1l, (int)anggota.get().getFotoCloseup().length()));
+            }
+            if (anggota.get().getFotoKtp() != null) {
+                anggotaDto.setFotoKtp(anggota.get().getFotoKtp().getBytes(1l, (int)anggota.get().getFotoKtp().length()));
+            }
             response.setSuccess("Berhasil", anggotaDto);
         } else {
             response.setError("99", "NIK belum terdaftar sebagai anggota");
